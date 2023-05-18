@@ -1,6 +1,10 @@
 postgres:
 	docker run --name work_room_auth -e POSTGRES_PASSWORD=password  -p 5432:5432 --rm -d postgres
 
+redis:
+	docker run -d -p 6379:6379 --name redis redis
+
+
 create-migration:
 	migrate create -ext sql -dir ./internal/repository/postgres/migrations -seq {migration_name}
 

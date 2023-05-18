@@ -4,15 +4,18 @@ import (
 	"auth/internal/model"
 	"github.com/jmoiron/sqlx"
 	"github.com/lib/pq"
+	"github.com/redis/go-redis/v9"
 )
 
 type User struct {
-	db *sqlx.DB
+	postgresDB *sqlx.DB
+	redisDB    *redis.Client
 }
 
-func NewUser(db *sqlx.DB) *User {
+func NewUser(db *sqlx.DB, redis *redis.Client) *User {
 	return &User{
-		db: db,
+		postgresDB: db,
+		redisDB:    redis,
 	}
 }
 
@@ -21,7 +24,7 @@ func (u *User) Create(user model.UserInput) (int, error) {
 	query := `INSERT INTO users (name, surname,position,location,birth_date, gender, email, phone, password,role) 
 			  VALUES ($1,$2,$3 ,$4,$5,$6,$7,$8,$9,$10) RETURNING id`
 
-	err := u.db.QueryRowx(query,
+	err := u.postgresDB.QueryRowx(query,
 		user.Name,
 		user.Surname,
 		user.Position,
