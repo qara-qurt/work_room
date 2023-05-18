@@ -1,8 +1,13 @@
 package service
 
-import "auth/internal/repository"
+import (
+	"auth/internal/model"
+	"auth/internal/repository"
+)
 
-type IUser interface{}
+type IUser interface {
+	Create(user model.UserInput) (int, error)
+}
 
 type Service struct {
 	User IUser

@@ -1,0 +1,16 @@
+### SignUp
+POST localhost:8080/api/auth/sign-up
+Content-Type: application/json
+
+{
+  "name": "Dias",
+  "surname": "Serikov",
+  "position": "Backend",
+  "location": "Almaty",
+  "birth_date": "2002-05-12",
+  "gender":"male",
+  "role": "owner",
+  "email": "qara-qurtt@gmail.com",
+  "password": "123456",
+  "phone": "+77058339380"
+}

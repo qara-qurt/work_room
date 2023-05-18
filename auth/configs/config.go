@@ -29,33 +29,33 @@ func New() (*Config, error) {
 		return nil, err
 	}
 
-	port, ok := os.LookupEnv("PORT")
+	port, ok := os.LookupEnv("SERVER_PORT")
 	if !ok {
 		port = "8080"
 	}
-	dbHost, ok := os.LookupEnv("DBHOST")
+	dbHost, ok := os.LookupEnv("DB_HOST")
 	if !ok {
 		dbHost = "localhost"
 	}
-	dbPort, ok := os.LookupEnv("DBPORT")
+	dbPort, ok := os.LookupEnv("DB_PORT")
 	if !ok {
 		dbPort = "5432"
 	}
-	dbUser, ok := os.LookupEnv("DBUSER")
+	dbUser, ok := os.LookupEnv("DB_USER")
 	if !ok {
 		dbUser = "postgres"
 	}
-	dbPassword, ok := os.LookupEnv("DBPASSWORD")
+	dbPassword, ok := os.LookupEnv("DB_PASSWORD")
 	if !ok {
 		dbPassword = "password"
 	}
-	dbName, ok := os.LookupEnv("DBNAME")
+	dbName, ok := os.LookupEnv("DB_NAME")
 	if !ok {
 		dbName = "postgres"
 	}
-	dbSSLMode, ok := os.LookupEnv("DBSSLMODE")
+	SSLMode, ok := os.LookupEnv("SSL_MODE")
 	if !ok {
-		dbSSLMode = "disable"
+		SSLMode = "disable"
 	}
 
 	return &Config{
@@ -68,7 +68,7 @@ func New() (*Config, error) {
 			User:     dbUser,
 			Password: dbPassword,
 			DBName:   dbName,
-			SSLMode:  dbSSLMode,
+			SSLMode:  SSLMode,
 		},
 	}, nil
 }
