@@ -23,7 +23,7 @@ func run() error {
 	if err != nil {
 		return err
 	}
-	service := service.New(repo)
+	service := service.New(repo, config)
 	handler := handler.New(service)
 
 	srv := http.NewServer(config, handler)

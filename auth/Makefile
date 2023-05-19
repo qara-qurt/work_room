@@ -1,8 +1,8 @@
 postgres:
-	docker run --name work_room_auth -e POSTGRES_PASSWORD=password  -p 5432:5432 --rm -d postgres
+	docker run --name work_room_auth_postgres -e POSTGRES_PASSWORD=password  -p 5432:5432 --rm -d postgres
 
 redis:
-	docker run -d -p 6379:6379 --name redis redis
+	docker run --name work_room_auth_redis -p 6379:6379 --rm -d redis
 
 
 create-migration:

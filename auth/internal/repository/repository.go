@@ -9,10 +9,17 @@ import (
 
 type IUserRepository interface {
 	Create(user model.UserInput) (int, error)
+	GetByEmail(string string) (model.User, error)
+}
+
+type ITokenRepository interface {
+	Create(token model.RefreshSession) error
+	Get(token string) (model.RefreshSession, error)
 }
 
 type Repository struct {
-	User IUserRepository
+	User  IUserRepository
+	Token ITokenRepository
 }
 
 func New(cfg *configs.Config) (*Repository, error) {
@@ -25,8 +32,10 @@ func New(cfg *configs.Config) (*Repository, error) {
 		return nil, err
 	}
 
-	user := postgres.NewUser(postgresDB.DB, redisDB.Redis)
+	user := postgres.NewUser(postgresDB.DB)
+	token := redis.NewToken(redisDB.Redis)
 	return &Repository{
-		User: user,
+		User:  user,
+		Token: token,
 	}, nil
 }

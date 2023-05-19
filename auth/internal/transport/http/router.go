@@ -11,6 +11,7 @@ func (s *Server) InitRouter() {
 	{
 		auth.POST("/sign-up", s.handler.SignUp)
 		auth.POST("/sign-in", s.handler.SignIn)
+		auth.GET("/refresh", s.handler.Refresh)
 	}
 
 }

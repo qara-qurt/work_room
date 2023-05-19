@@ -13,7 +13,8 @@ type Config struct {
 }
 
 type Server struct {
-	Port string
+	Port       string
+	HMACSecret string
 }
 
 type Database struct {
@@ -48,7 +49,8 @@ func New() (*Config, error) {
 
 	return &Config{
 		Server: Server{
-			Port: GetEnv("SERVER_PORT", "8080"),
+			Port:       GetEnv("SERVER_PORT", "8080"),
+			HMACSecret: GetEnv("SERVER_HMACSECRET", "secret"),
 		},
 		Database: Database{
 			Host:     GetEnv("DB_HOST", "localhost"),

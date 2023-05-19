@@ -2,20 +2,18 @@ package postgres
 
 import (
 	"auth/internal/model"
+	"database/sql"
 	"github.com/jmoiron/sqlx"
 	"github.com/lib/pq"
-	"github.com/redis/go-redis/v9"
 )
 
 type User struct {
 	postgresDB *sqlx.DB
-	redisDB    *redis.Client
 }
 
-func NewUser(db *sqlx.DB, redis *redis.Client) *User {
+func NewUser(db *sqlx.DB) *User {
 	return &User{
 		postgresDB: db,
-		redisDB:    redis,
 	}
 }
 
@@ -37,13 +35,30 @@ func (u *User) Create(user model.UserInput) (int, error) {
 		user.Role).Scan(&userId)
 	if err != nil {
 		if err.(*pq.Error).Constraint == "users_email_key" {
-			return 0, model.ErrorAlreadyExist
+			return 0, model.ErrorUserAlreadyExist
 		}
 		if err.(*pq.Error).Constraint == "users_phone_key" {
-			return 0, model.ErrorPhoneAlreadyLinked
+			return 0, model.ErrorUserPhoneAlreadyLinked
 		}
 		return 0, err
 	}
 
 	return userId, nil
+}
+
+func (u *User) GetByEmail(email string) (model.User, error) {
+	query := `SELECT 
+    			*
+			   FROM users 
+			   WHERE email = $1`
+
+	var user model.User
+	err := u.postgresDB.Get(&user, query, email)
+	//check user is found
+	if err == sql.ErrNoRows {
+		return model.User{}, model.ErrorUserNotFound
+	} else if err != nil {
+		return model.User{}, err
+	}
+	return user, nil
 }
