@@ -1,4 +1,4 @@
-FROM golang:latest as builder
+FROM golang:latest AS builder
 WORKDIR /app
 COPY go.mod .
 COPY go.sum .
@@ -10,8 +10,9 @@ FROM alpine:latest
 WORKDIR /app
 COPY --from=builder /app/app .
 COPY --from=builder /app/configs /app/configs
+COPY --from=builder /app/.env /app
 COPY --from=builder /usr/local/go/lib/time/zoneinfo.zip /
-COPY .env .
 ENV TZ=Asia/Almaty
+EXPOSE 8080
 ENV ZONEINFO=/zoneinfo.zip
 CMD ["./app"]

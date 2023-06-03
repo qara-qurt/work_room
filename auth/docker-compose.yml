@@ -1,0 +1,70 @@
+version: '3.9'
+
+volumes:
+  work_room_auth:
+
+networks:
+  application:
+    external: false
+    driver: bridge
+
+services:
+  app:
+    container_name: auth-app
+    build: ./
+    command: ./app
+    env_file:
+      - .env
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+      - redis
+    environment:
+      - TZ=Asia/Almaty
+      - SERVER_PORT=${SERVER_PORT}
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - SSL_MODE=${SSL_MODE}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_DB=${REDIS_DB}
+      - SERVER_HMACSECRET=${SERVER_HMACSECRET}
+    restart: on-failure
+    networks:
+      - application
+
+  postgres:
+    container_name: auth-postgres
+    restart: always
+    env_file:
+      - .env
+    image: postgres:latest
+    volumes:
+      - /work_room_auth:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    ports:
+      - "5436:5432"
+    networks:
+      - application
+
+  redis:
+    container_name: auth-redis
+    restart: always
+    image: redis:alpine
+    environment:
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_DB=${REDIS_DB}
+    ports:
+      - "6379:6379"
+    networks:
+      - application

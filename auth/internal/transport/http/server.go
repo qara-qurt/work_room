@@ -5,6 +5,7 @@ import (
 	"auth/internal/transport/http/handler"
 	"fmt"
 	"github.com/labstack/echo/v4"
+	"github.com/sirupsen/logrus"
 )
 
 type Server struct {
@@ -27,5 +28,6 @@ func (s *Server) Run() error {
 	if err := s.HTTP.Start(fmt.Sprintf(":%s", s.config.Server.Port)); err != nil {
 		return err
 	}
+	logrus.Info(fmt.Sprintf("Server runned on %s", s.config.Server.Port))
 	return nil
 }

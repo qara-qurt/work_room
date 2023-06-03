@@ -3,6 +3,7 @@ package handler
 import (
 	"auth/internal/model"
 	"github.com/labstack/echo/v4"
+	"github.com/sirupsen/logrus"
 	"net/http"
 	"time"
 )
@@ -10,18 +11,25 @@ import (
 func (h *Handler) SignUp(c echo.Context) error {
 	var user model.UserInput
 	if err := c.Bind(&user); err != nil {
-		return c.JSON(http.StatusBadRequest, err.Error())
+		logrus.Error(err)
+		return c.JSON(http.StatusBadRequest, map[string]string{
+			"error": err.Error(),
+		})
 	}
 	if err := user.Validate(); err != nil {
-		return c.JSON(http.StatusBadRequest, err.Error())
+		logrus.Error(err)
+		return c.JSON(http.StatusBadRequest, map[string]string{
+			"error": err.Error(),
+		})
 	}
 
 	id, err := h.service.User.Create(user)
 	if err != nil {
+		logrus.Error(err)
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 
-	return c.JSON(http.StatusOK, map[string]int{
+	return c.JSON(http.StatusCreated, map[string]int{
 		"id": id,
 	})
 }
@@ -29,16 +37,25 @@ func (h *Handler) SignUp(c echo.Context) error {
 func (h *Handler) SignIn(c echo.Context) error {
 	var user model.UserAuthInput
 	if err := c.Bind(&user); err != nil {
-		return c.JSON(http.StatusBadRequest, err.Error())
+		logrus.Error(err)
+		return c.JSON(http.StatusBadRequest, map[string]string{
+			"error": err.Error(),
+		})
 	}
 
 	if err := user.Validate(); err != nil {
-		return c.JSON(http.StatusBadRequest, err.Error())
+		logrus.Error(err)
+		return c.JSON(http.StatusBadRequest, map[string]string{
+			"error": err.Error(),
+		})
 	}
 
 	accessToken, refreshToken, err := h.service.User.SignIn(user)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, err.Error())
+		logrus.Error(err)
+		return c.JSON(http.StatusInternalServerError, map[string]string{
+			"error": err.Error(),
+		})
 	}
 
 	cookie := &http.Cookie{
@@ -63,7 +80,10 @@ func (h *Handler) Refresh(c echo.Context) error {
 
 	accessToken, refreshToken, err := h.service.User.RefreshTokens(token.Value)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, err.Error())
+		logrus.Error(err)
+		return c.JSON(http.StatusInternalServerError, map[string]string{
+			"error": err.Error(),
+		})
 	}
 
 	cookie := &http.Cookie{

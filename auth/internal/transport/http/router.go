@@ -1,6 +1,8 @@
 package http
 
-import "github.com/labstack/echo/v4/middleware"
+import (
+	"github.com/labstack/echo/v4/middleware"
+)
 
 func (s *Server) InitRouter() {
 	api := s.HTTP.Group("/api")
@@ -14,4 +16,8 @@ func (s *Server) InitRouter() {
 		auth.GET("/refresh", s.handler.Refresh)
 	}
 
+	company := api.Group("/company")
+	{
+		company.POST("", s.handler.CreateCompany)
+	}
 }

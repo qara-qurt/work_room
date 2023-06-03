@@ -2,6 +2,7 @@ package configs
 
 import (
 	"github.com/joho/godotenv"
+	"github.com/sirupsen/logrus"
 	"os"
 	"strconv"
 )
@@ -44,6 +45,7 @@ func GetEnv(key, defaultValue string) string {
 func New() (*Config, error) {
 	err := godotenv.Load()
 	if err != nil {
+		logrus.Error(err)
 		return nil, err
 	}
 

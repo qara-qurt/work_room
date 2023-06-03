@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
+	"github.com/sirupsen/logrus"
 )
 
 type DatabasePSQL struct {
@@ -26,6 +27,7 @@ func NewDatabasePSQL(cfg *configs.Config) (*DatabasePSQL, error) {
 		return nil, err
 	}
 
+	logrus.Info(url)
 	if err := db.Ping(); err != nil {
 		return nil, err
 	}

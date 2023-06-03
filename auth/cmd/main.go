@@ -6,21 +6,23 @@ import (
 	"auth/internal/service"
 	"auth/internal/transport/http"
 	"auth/internal/transport/http/handler"
-	"log"
+	"github.com/sirupsen/logrus"
 )
 
 func main() {
-	log.Fatal(run())
+	logrus.Fatal(run())
 }
 
 func run() error {
 	config, err := configs.New()
+	logrus.Info("config successfully built")
 	if err != nil {
 		return err
 	}
 
 	repo, err := repository.New(config)
 	if err != nil {
+		logrus.Error(err)
 		return err
 	}
 	service := service.New(repo, config)
@@ -28,8 +30,9 @@ func run() error {
 
 	srv := http.NewServer(config, handler)
 	srv.InitRouter()
-
+	logrus.Info("routes successfully added")
 	if err := srv.Run(); err != nil {
+		logrus.Error()
 		return err
 	}
 	return nil

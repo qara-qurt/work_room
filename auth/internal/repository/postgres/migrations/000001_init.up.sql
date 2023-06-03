@@ -20,7 +20,7 @@ CREATE TABLE users (
 
 CREATE TABLE company (
                          id SERIAL PRIMARY KEY,
-                         name VARCHAR(50) NOT NULL,
+                         name VARCHAR(50) UNIQUE NOT NULL,
                          owner_id INTEGER NOT NULL,
                          description VARCHAR DEFAULT NULL,
                          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
