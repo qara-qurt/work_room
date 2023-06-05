@@ -3,6 +3,7 @@ package postgres
 import (
 	"auth/internal/model"
 	"database/sql"
+	"fmt"
 	"github.com/jmoiron/sqlx"
 	"github.com/lib/pq"
 )
@@ -54,11 +55,36 @@ func (u *User) GetByEmail(email string) (model.User, error) {
 
 	var user model.User
 	err := u.postgresDB.Get(&user, query, email)
-	//check user is found
+
 	if err == sql.ErrNoRows {
 		return model.User{}, model.ErrorUserNotFound
 	} else if err != nil {
 		return model.User{}, err
 	}
+	return user, nil
+}
+
+func (u *User) GetUsers(page, offset int) ([]model.User, error) {
+	query := fmt.Sprintf("SELECT * FROM users LIMIT %d OFFSET %d", offset, (page-1)*offset)
+	var users []model.User
+
+	if err := u.postgresDB.Select(&users, query); err != nil {
+		return users, err
+	}
+
+	return users, nil
+}
+
+func (u *User) GetUser(id int) (model.User, error) {
+	query := "SELECT * FROM users WHERE id = $1"
+	var user model.User
+
+	err := u.postgresDB.Get(&user, query, id)
+	if err == sql.ErrNoRows {
+		return user, model.ErrorUserIdNotFound
+	} else if err != nil {
+		return user, err
+	}
+
 	return user, nil
 }

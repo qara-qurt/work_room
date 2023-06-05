@@ -8,7 +8,7 @@ create-migration:
 	migrate create -ext sql -dir ./internal/repository/postgres/migrations -seq {migration_name}
 
 migrate-up:
-	migrate -database "postgres://postgres:password@localhost:5433/postgres?sslmode=disable" -path ./internal/repository/postgres/migrations up
+	migrate -database "postgres://postgres:password@localhost:5436/postgres?sslmode=disable" -path ./internal/repository/postgres/migrations up
 
 migrate-down:
-	migrate -database "postgres://postgres:password@localhost:5433/postgres?sslmode=disable" -path ./internal/repository/postgres/migrations down
+	migrate -database "postgres://postgres:password@localhost:5436/postgres?sslmode=disable" -path ./internal/repository/postgres/migrations down

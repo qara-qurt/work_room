@@ -19,5 +19,13 @@ func (s *Server) InitRouter() {
 	company := api.Group("/company")
 	{
 		company.POST("", s.handler.CreateCompany)
+		company.GET("", s.handler.GetCompanies)
+		company.GET("/:id", s.handler.GetCompany)
+	}
+
+	users := api.Group("/users")
+	{
+		users.GET("", s.handler.GetUsers)
+		users.GET("/:id", s.handler.GetUser)
 	}
 }

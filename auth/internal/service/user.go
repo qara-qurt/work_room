@@ -121,6 +121,14 @@ func (u *User) ParseToken(ctx context.Context, token string) (uint, error) {
 	return uint(id), nil
 }
 
+func (u *User) GetUsers(page, offset int) ([]model.User, error) {
+	return u.repo.GetUsers(page, offset)
+}
+
+func (u *User) GetUser(id int) (model.User, error) {
+	return u.repo.GetUser(id)
+}
+
 func newRefreshToken() (string, error) {
 	b := make([]byte, 32)
 

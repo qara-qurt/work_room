@@ -11,6 +11,8 @@ import (
 type IUserRepository interface {
 	Create(user model.UserInput) (int, error)
 	GetByEmail(string string) (model.User, error)
+	GetUsers(page, offset int) ([]model.User, error)
+	GetUser(id int) (model.User, error)
 }
 
 type ITokenRepository interface {
@@ -20,6 +22,8 @@ type ITokenRepository interface {
 
 type ICompanyRepository interface {
 	Create(company model.CompanyInput) (int, error)
+	GetCompanies(page, offset int) ([]model.Company, error)
+	GetCompany(id int) (model.Company, error)
 }
 
 type Repository struct {

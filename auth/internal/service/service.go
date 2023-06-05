@@ -10,10 +10,14 @@ type IUser interface {
 	Create(user model.UserInput) (int, error)
 	SignIn(user model.UserAuthInput) (string, string, error)
 	RefreshTokens(refreshToken string) (string, string, error)
+	GetUsers(page, offset int) ([]model.User, error)
+	GetUser(id int) (model.User, error)
 }
 
 type ICompany interface {
 	Create(input model.CompanyInput) (int, error)
+	GetCompanies(page, offset int) ([]model.Company, error)
+	GetCompany(id int) (model.Company, error)
 }
 
 type Service struct {
