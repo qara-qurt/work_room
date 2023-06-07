@@ -5,17 +5,20 @@ import (
 )
 
 func (s *Server) InitRouter() {
-	api := s.HTTP.Group("/api")
-	api.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
-		Format: "method=${method}, uri=${uri}, status=${status}\n",
-	}))
-	auth := api.Group("/auth")
+
+	auth := s.HTTP.Group("/auth")
 	{
 		auth.POST("/sign-up", s.handler.SignUp)
 		auth.POST("/sign-in", s.handler.SignIn)
 		auth.GET("/refresh", s.handler.Refresh)
 	}
 
+	api := s.HTTP.Group("/api")
+	api.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
+		Format: "method=${method}, uri=${uri}, status=${status}\n",
+	}))
+	//check token
+	api.Use(s.handler.AuthMiddleware)
 	company := api.Group("/company")
 	{
 		company.POST("", s.handler.CreateCompany)

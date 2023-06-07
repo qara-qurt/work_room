@@ -26,7 +26,7 @@ func run() error {
 		return err
 	}
 	service := service.New(repo, config)
-	handler := handler.New(service)
+	handler := handler.New(service, config)
 
 	srv := http.NewServer(config, handler)
 	srv.InitRouter()
