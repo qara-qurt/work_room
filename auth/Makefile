@@ -12,3 +12,6 @@ migrate-up:
 
 migrate-down:
 	migrate -database "postgres://postgres:password@localhost:5436/postgres?sslmode=disable" -path ./internal/repository/postgres/migrations down
+
+migrate-drop:
+	migrate -database "postgres://postgres:password@localhost:5436/postgres?sslmode=disable" -path ./internal/repository/postgres/migrations drop
