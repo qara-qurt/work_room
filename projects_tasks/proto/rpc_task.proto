@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package task;
+option go_package = "proto/gen";
+
+import "google/protobuf/timestamp.proto";
+import "proto/task.proto";
+
+message CreateTaskRequest {
+  uint64 project_id = 1;
+  string name = 2;
+  string group = 3;
+  uint64 owner_id = 4;
+  string description = 5;
+  string priority = 6;
+  uint64 assign = 7;
+  string status = 8;
+  google.protobuf.Timestamp deadline_at = 9;
+}
+
+message CreateTaskResponse {
+  uint64 task_id = 1;
+}
+
+message GetTasksRequest {
+  uint64 project_id = 1;
+  optional string name = 2;
+  optional string description = 3;
+  optional uint64 group = 4;
+  optional uint64 owner_id = 5;
+  optional string priority = 6;
+  optional uint64 assign = 7;
+  optional uint64 status = 8;
+  optional google.protobuf.Timestamp deadline_at = 9;
+}
+
+message GetTasksResponse {
+  repeated task.Task tasks = 1;
+}
+
+message GetTaskRequest {
+  uint64 project_id = 1;
+}

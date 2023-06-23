@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package project;
+option go_package = "proto/gen";
+
+import "proto/rpc_project.proto";
+
+service ProjectService {
+  rpc CreateProject(project.CreateProjectRequest) returns(project.CreateProjectResponse);
+  rpc GetProjects(project.GetProjectsRequest) returns(project.GetProjectsResponse);
+  rpc GetProject(project.GetProjectRequest) returns(project.GetProjectResponse);
+  rpc UpdateProject(project.UpdateProjectRequest) returns(project.GetProjectResponse);
+  rpc DeleteProject(project.DeleteProjectRequest) returns(project.GetProjectResponse);
+}
+

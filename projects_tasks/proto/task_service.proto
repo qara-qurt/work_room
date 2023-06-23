@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package task;
+option go_package = "proto/gen";
+
+import "proto/task.proto";
+import "proto/rpc_task.proto";
+
+service TaskService{
+  rpc CreateTask(task.CreateTaskRequest) returns(task.CreateTaskResponse);
+  rpc GetTasks(task.GetTasksRequest) returns(task.GetTasksResponse);
+  rpc GetTask(task.GetTaskRequest) returns(task.TaskResponse);
+  rpc DeleteTask(task.GetTaskRequest) returns(task.TaskResponse);
+}

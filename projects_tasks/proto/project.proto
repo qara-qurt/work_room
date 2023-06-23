@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package project;
+option go_package = "proto/gen";
+
+import "google/protobuf/timestamp.proto";
+
+message Project {
+  uint64 id = 1;
+  string name = 2;
+  string priority = 3;
+  string img = 4;
+  string description = 5;
+  uint64 company_id = 6;
+  uint64 reporter_id = 7;
+  repeated uint64 assignees_ids = 8;
+  google.protobuf.Timestamp starts_at = 9;
+  google.protobuf.Timestamp deadline_at = 10;
+  google.protobuf.Timestamp updated_at = 11;
+}
+
+
+
+message ProjectResponse{
+  Project project = 1;
+}
+

@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+package project;
+option go_package = "proto/gen";
+
+import "google/protobuf/timestamp.proto";
+import "proto/project.proto";
+
+message CreateProjectRequest{
+  string name = 1;
+  string priority = 2;
+  optional string img = 3;
+  string description = 4;
+  uint64 company_id = 5;
+  uint64 reporter_id = 6;
+  repeated uint64 assignees_ids = 7;
+  google.protobuf.Timestamp deadline_at = 8;
+}
+
+message CreateProjectResponse{
+  uint64 project_id = 1;
+}
+
+message GetProjectsRequest{
+  optional string name = 1;
+  optional string priority = 2;
+  optional string description = 3;
+  uint64 company_id = 4;
+  optional uint64 reporter_id = 5;
+}
+
+message GetProjectsResponse{
+  repeated project.Project projects = 1;
+}
+
+message GetProjectRequest{
+  uint64 id = 1;
+}
+
+message GetProjectResponse{
+  project.Project project = 1;
+}
+
+message UpdateProjectRequest{
+  optional string name = 1;
+  optional string priority = 2;
+  optional string description = 3;
+  optional uint64 company_id = 4;
+  optional uint64 reporter_id = 5;
+  optional string img = 6;
+  repeated uint64 assignees_ids = 7;
+  google.protobuf.Timestamp deadline_at = 8;
+}
+
+message DeleteProjectRequest{
+  uint64 id = 1;
+}
